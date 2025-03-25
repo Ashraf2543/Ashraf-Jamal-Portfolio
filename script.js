@@ -56,29 +56,34 @@ const hamburger = document.getElementById('hamburger');
             });
         });
 
-        const skillBars = document.querySelectorAll('.skill-progress');
-
-        function animateSkillBars() {
+        const animateSkillBars = () => {
+            const skillBars = document.querySelectorAll('.skill-progress');
+            
             skillBars.forEach(bar => {
                 const percent = bar.getAttribute('data-percent');
                 if (isElementInViewport(bar)) {
                     bar.style.width = percent + '%';
+                    // Update the percentage text next to the bar
+                    const percentElement = bar.closest('.skill-bar-container').querySelector('.skill-percent');
+                    percentElement.textContent = percent + '%';
                 }
             });
-        }
-
-        function isElementInViewport(el) {
+        };
+        
+        const isElementInViewport = (el) => {
             const rect = el.getBoundingClientRect();
             return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
             );
-        }
-
-        animateSkillBars();
-
+        };
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            animateSkillBars();
+        });
+        
+        // Animate on scroll
         window.addEventListener('scroll', animateSkillBars);
 
         const contactForm = document.getElementById('contactForm');
